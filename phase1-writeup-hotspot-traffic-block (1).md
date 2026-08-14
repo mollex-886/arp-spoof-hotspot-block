@@ -33,23 +33,23 @@ A local network attack demonstrating how a device on a shared WiFi network can b
 
 VM networking has to be in **Bridged mode** rather than NAT, so the Kali VM shares the same subnet as the other hotspot clients instead of hiding behind the host's IP.
 
-<img src="images/network-connection-bridged.png" width="500">
+<img src="network-connection-bridged.png" width="500">
 
 The default bridged network (VMnet0) wasn't configured out of the box — the Virtual Network Editor only had Host-only and NAT networks present:
 
-<img src="images/virtual-network-editor-before.png" width="600">
+<img src="virtual-network-editor-before.png" width="600">
 
 Added a new VMnet, set it to Bridged, and had to explicitly select the physical WiFi adapter instead of leaving it on "Automatic" (which was silently binding to the wrong interface and causing DHCP to fail):
 
-<img src="images/bridge-adapter-selection.png" width="450">
+<img src="bridge-adapter-selection.png" width="450">
 
 Confirmed VMnet0 picked up the correct bridged config afterward:
 
-<img src="images/vmnet0-created.png" width="600">
+<img src="vmnet0-created.png" width="600">
 
 After fixing the adapter binding, the Kali VM successfully pulled a real DHCP lease from the iPhone hotspot instead of a `169.254.x.x` self-assigned fallback address:
 
-<img src="images/ip-a-successful-lease.png" width="600">
+<img src="ip-a-successful-lease.png" width="600">
 
 ## Steps
 
