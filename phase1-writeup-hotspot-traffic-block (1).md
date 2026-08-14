@@ -58,6 +58,7 @@ After fixing the adapter binding, the Kali VM successfully pulled a real DHCP le
 cat /proc/sys/net/ipv4/ip_forward
 # Output: 0
 ```
+<img src="ip-forwarding-0.png">
 
 **2. Enumerate hosts on the hotspot subnet:**
 ```
@@ -70,17 +71,19 @@ Nmap scan report for 172.20.10.9    (attacker / Kali VM)
 Nmap scan report for 172.20.10.11   (target / iOS device)
 Nmap done: 16 IP addresses (4 hosts up) scanned
 ```
+<img src="nmap-command.png">
 
 **3. Run the ARP spoof**, impersonating the gateway to the target:
 ```
 sudo arpspoof -i eth0 -t 172.20.10.11 172.20.10.1
 ```
+<img src="sudo-arpspoof.png">
 
 ## How It Works
 `arpspoof` sends forged ARP replies to the target claiming the attacker's MAC address belongs to the gateway's IP (172.20.10.1). The target updates its ARP cache and starts routing all outbound traffic through the Kali VM instead of the real gateway. Since `ip_forward` is left at `0`, that traffic is never relayed onward — it's simply dropped. The target stays associated with the WiFi network the whole time, but has no working internet.
 
 ## Result
-Confirmed working — the target device lost all internet connectivity while the spoof was active (verified by attempting to load fresh, uncached pages on the target). Stopping the spoof (`Ctrl+C`) let the ARP tables heal and connectivity returned to normal shortly after.
+Confirmed working — the target device lost all internet connectivity while the spoof was active. Notably, the target phone's WiFi connection did not disconnect, but it could not use the internet at all; attempting to search for random queries on Google completely failed to load. Stopping the spoof (`Ctrl+C`) let the ARP tables heal and connectivity returned to normal shortly after.
 
 ## Key Takeaways
 - This is a **Layer 2 attack** — attacker and target must share the same broadcast domain (same WiFi/LAN). It doesn't work across separate networks.
