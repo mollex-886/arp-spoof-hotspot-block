@@ -64,13 +64,6 @@ cat /proc/sys/net/ipv4/ip_forward
 ```
 sudo nmap -sn 172.20.10.0/28
 ```
-```
-Nmap scan report for 172.20.10.1    (gateway / iPhone)
-Nmap scan report for 172.20.10.8    (attacker host / laptop)
-Nmap scan report for 172.20.10.9    (attacker / Kali VM)
-Nmap scan report for 172.20.10.11   (target / iOS device)
-Nmap done: 16 IP addresses (4 hosts up) scanned
-```
 <img src="nmap-command.png">
 
 **3. Run the ARP spoof**, impersonating the gateway to the target:
